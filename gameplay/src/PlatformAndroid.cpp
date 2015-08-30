@@ -12,6 +12,9 @@
 #include <android_native_app_glue.h>
 #include <android/log.h>
 
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "AdsFrame.Edition", __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "AdsFrame.Edition", __VA_ARGS__))
+
 // Externally referenced global variables.
 struct android_app* __state;
 AAssetManager* __assetManager;
@@ -183,7 +186,6 @@ static bool initEGL()
     {
         samples = std::max(config->getInt("samples"), 0);
     }
-
     // Hard-coded to 32-bit/OpenGL ES 2.0.
     // NOTE: EGL_SAMPLE_BUFFERS, EGL_SAMPLES and EGL_DEPTH_SIZE MUST remain at the beginning of the attribute list
     // since they are expected to be at indices 0-5 in config fallback code later.
@@ -304,7 +306,7 @@ static bool initEGL()
         checkErrorEGL("eglCreateWindowSurface");
         goto error;
     }
-    
+
     if (eglMakeCurrent(__eglDisplay, __eglSurface, __eglSurface, __eglContext) != EGL_TRUE)
     {
         checkErrorEGL("eglMakeCurrent");
@@ -318,7 +320,7 @@ static bool initEGL()
     
     // Set vsync.
     eglSwapInterval(__eglDisplay, WINDOW_VSYNC ? 1 : 0);
-    
+
     // Initialize OpenGL ES extensions.
     __glExtensions = (const char*)glGetString(GL_EXTENSIONS);
     
@@ -330,7 +332,7 @@ static bool initEGL()
         glGenVertexArrays = (PFNGLGENVERTEXARRAYSOESPROC)eglGetProcAddress("glGenVertexArraysOES");
         glIsVertexArray = (PFNGLISVERTEXARRAYOESPROC)eglGetProcAddress("glIsVertexArrayOES");
     }
-    
+
     return true;
     
 error:
@@ -439,145 +441,145 @@ static Keyboard::Key getKey(int keycode, int metastate)
     
     switch(keycode)
     {
-        case AKEYCODE_HOME:
-            return Keyboard::KEY_HOME;
-        case AKEYCODE_0:
-            return Keyboard::KEY_ZERO;
-        case AKEYCODE_1:
-            return Keyboard::KEY_ONE;
-        case AKEYCODE_2:
-            return Keyboard::KEY_TWO;
-        case AKEYCODE_3:
-            return Keyboard::KEY_THREE;
-        case AKEYCODE_4:
-            return Keyboard::KEY_FOUR;
-        case AKEYCODE_5:
-            return Keyboard::KEY_FIVE;
-        case AKEYCODE_6:
-            return Keyboard::KEY_SIX;
-        case AKEYCODE_7:
-            return Keyboard::KEY_SEVEN;
-        case AKEYCODE_8:
-            return Keyboard::KEY_EIGHT;
-        case AKEYCODE_9:
-            return Keyboard::KEY_NINE;
-        case AKEYCODE_STAR:
-            return Keyboard::KEY_ASTERISK;
-        case AKEYCODE_POUND:
-            return Keyboard::KEY_NUMBER;
-        case AKEYCODE_DPAD_UP:
-            return Keyboard::KEY_UP_ARROW;
-        case AKEYCODE_DPAD_DOWN:
-            return Keyboard::KEY_DOWN_ARROW;
-        case AKEYCODE_DPAD_LEFT:
-            return Keyboard::KEY_LEFT_ARROW;
-        case AKEYCODE_DPAD_RIGHT:
-            return Keyboard::KEY_RIGHT_ARROW;
-        case AKEYCODE_A:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_A : Keyboard::KEY_A;
-        case AKEYCODE_B:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_B : Keyboard::KEY_B;
-       case AKEYCODE_C:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_C : Keyboard::KEY_C;
-        case AKEYCODE_D:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_D : Keyboard::KEY_D;
-        case AKEYCODE_E:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_E : Keyboard::KEY_E;
-        case AKEYCODE_F:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_F : Keyboard::KEY_F;
-        case AKEYCODE_G:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_G : Keyboard::KEY_G;
-        case AKEYCODE_H:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_H : Keyboard::KEY_H;
-        case AKEYCODE_I:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_I : Keyboard::KEY_I;
-        case AKEYCODE_J:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_J : Keyboard::KEY_J;
-        case AKEYCODE_K:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_K : Keyboard::KEY_K;
-        case AKEYCODE_L:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_L : Keyboard::KEY_L;
-        case AKEYCODE_M:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_M : Keyboard::KEY_M;
-        case AKEYCODE_N:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_N : Keyboard::KEY_N;
-        case AKEYCODE_O:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_O : Keyboard::KEY_O;
-        case AKEYCODE_P:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_P : Keyboard::KEY_P;
-        case AKEYCODE_Q:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_Q : Keyboard::KEY_Q;
-        case AKEYCODE_R:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_R : Keyboard::KEY_R;
-        case AKEYCODE_S:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_S : Keyboard::KEY_S;
-        case AKEYCODE_T:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_T : Keyboard::KEY_T;
-        case AKEYCODE_U:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_U : Keyboard::KEY_U;
-        case AKEYCODE_V:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_V : Keyboard::KEY_V;
-        case AKEYCODE_W:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_W : Keyboard::KEY_W;
-        case AKEYCODE_X:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_X : Keyboard::KEY_X;
-        case AKEYCODE_Y:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_Y : Keyboard::KEY_Y;
-        case AKEYCODE_Z:
-            return (shiftOn) ? Keyboard::KEY_CAPITAL_Z : Keyboard::KEY_Z;
-        case AKEYCODE_COMMA:
-            return Keyboard::KEY_COMMA;
-        case AKEYCODE_PERIOD:
-            return Keyboard::KEY_PERIOD;
-        case AKEYCODE_ALT_LEFT:
-        case AKEYCODE_ALT_RIGHT:
-            return Keyboard::KEY_ALT;
-        case AKEYCODE_SHIFT_LEFT:
-        case AKEYCODE_SHIFT_RIGHT:
-            return Keyboard::KEY_SHIFT;
-        case AKEYCODE_TAB:
-            return Keyboard::KEY_TAB;
-        case AKEYCODE_SPACE:
-            return Keyboard::KEY_SPACE;
-        case AKEYCODE_ENTER:
-            return Keyboard::KEY_RETURN;
-        case AKEYCODE_DEL:
-            return Keyboard::KEY_BACKSPACE;
-        case AKEYCODE_GRAVE:
-            return Keyboard::KEY_GRAVE;
-        case AKEYCODE_MINUS:
-            return Keyboard::KEY_MINUS;
-        case AKEYCODE_EQUALS:
-            return Keyboard::KEY_EQUAL;
-        case AKEYCODE_LEFT_BRACKET:
-            return Keyboard::KEY_LEFT_BRACKET;
-        case AKEYCODE_RIGHT_BRACKET:
-            return Keyboard::KEY_RIGHT_BRACKET;
-        case AKEYCODE_BACKSLASH:
-            return Keyboard::KEY_BACK_SLASH;
-        case AKEYCODE_SEMICOLON:
-            return Keyboard::KEY_SEMICOLON;
-        case AKEYCODE_APOSTROPHE:
-            return Keyboard::KEY_APOSTROPHE;
-        case AKEYCODE_SLASH:
-            return Keyboard::KEY_SLASH;
-        case AKEYCODE_AT:
-            return Keyboard::KEY_AT;
-        case AKEYCODE_PLUS:
-            return Keyboard::KEY_PLUS;
-        case AKEYCODE_PAGE_UP:
-            return Keyboard::KEY_PG_UP;
-        case AKEYCODE_PAGE_DOWN:
-            return Keyboard::KEY_PG_DOWN;
-        case AKEYCODE_MENU:
-            return Keyboard::KEY_MENU;
-        case AKEYCODE_SEARCH:
-            return Keyboard::KEY_SEARCH;
+    case AKEYCODE_HOME:
+        return Keyboard::KEY_HOME;
+    case AKEYCODE_0:
+        return Keyboard::KEY_ZERO;
+    case AKEYCODE_1:
+        return Keyboard::KEY_ONE;
+    case AKEYCODE_2:
+        return Keyboard::KEY_TWO;
+    case AKEYCODE_3:
+        return Keyboard::KEY_THREE;
+    case AKEYCODE_4:
+        return Keyboard::KEY_FOUR;
+    case AKEYCODE_5:
+        return Keyboard::KEY_FIVE;
+    case AKEYCODE_6:
+        return Keyboard::KEY_SIX;
+    case AKEYCODE_7:
+        return Keyboard::KEY_SEVEN;
+    case AKEYCODE_8:
+        return Keyboard::KEY_EIGHT;
+    case AKEYCODE_9:
+        return Keyboard::KEY_NINE;
+    case AKEYCODE_STAR:
+        return Keyboard::KEY_ASTERISK;
+    case AKEYCODE_POUND:
+        return Keyboard::KEY_NUMBER;
+    case AKEYCODE_DPAD_UP:
+        return Keyboard::KEY_UP_ARROW;
+    case AKEYCODE_DPAD_DOWN:
+        return Keyboard::KEY_DOWN_ARROW;
+    case AKEYCODE_DPAD_LEFT:
+        return Keyboard::KEY_LEFT_ARROW;
+    case AKEYCODE_DPAD_RIGHT:
+        return Keyboard::KEY_RIGHT_ARROW;
+    case AKEYCODE_A:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_A : Keyboard::KEY_A;
+    case AKEYCODE_B:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_B : Keyboard::KEY_B;
+    case AKEYCODE_C:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_C : Keyboard::KEY_C;
+    case AKEYCODE_D:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_D : Keyboard::KEY_D;
+    case AKEYCODE_E:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_E : Keyboard::KEY_E;
+    case AKEYCODE_F:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_F : Keyboard::KEY_F;
+    case AKEYCODE_G:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_G : Keyboard::KEY_G;
+    case AKEYCODE_H:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_H : Keyboard::KEY_H;
+    case AKEYCODE_I:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_I : Keyboard::KEY_I;
+    case AKEYCODE_J:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_J : Keyboard::KEY_J;
+    case AKEYCODE_K:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_K : Keyboard::KEY_K;
+    case AKEYCODE_L:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_L : Keyboard::KEY_L;
+    case AKEYCODE_M:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_M : Keyboard::KEY_M;
+    case AKEYCODE_N:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_N : Keyboard::KEY_N;
+    case AKEYCODE_O:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_O : Keyboard::KEY_O;
+    case AKEYCODE_P:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_P : Keyboard::KEY_P;
+    case AKEYCODE_Q:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_Q : Keyboard::KEY_Q;
+    case AKEYCODE_R:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_R : Keyboard::KEY_R;
+    case AKEYCODE_S:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_S : Keyboard::KEY_S;
+    case AKEYCODE_T:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_T : Keyboard::KEY_T;
+    case AKEYCODE_U:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_U : Keyboard::KEY_U;
+    case AKEYCODE_V:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_V : Keyboard::KEY_V;
+    case AKEYCODE_W:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_W : Keyboard::KEY_W;
+    case AKEYCODE_X:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_X : Keyboard::KEY_X;
+    case AKEYCODE_Y:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_Y : Keyboard::KEY_Y;
+    case AKEYCODE_Z:
+        return (shiftOn) ? Keyboard::KEY_CAPITAL_Z : Keyboard::KEY_Z;
+    case AKEYCODE_COMMA:
+        return Keyboard::KEY_COMMA;
+    case AKEYCODE_PERIOD:
+        return Keyboard::KEY_PERIOD;
+    case AKEYCODE_ALT_LEFT:
+    case AKEYCODE_ALT_RIGHT:
+        return Keyboard::KEY_ALT;
+    case AKEYCODE_SHIFT_LEFT:
+    case AKEYCODE_SHIFT_RIGHT:
+        return Keyboard::KEY_SHIFT;
+    case AKEYCODE_TAB:
+        return Keyboard::KEY_TAB;
+    case AKEYCODE_SPACE:
+        return Keyboard::KEY_SPACE;
+    case AKEYCODE_ENTER:
+        return Keyboard::KEY_RETURN;
+    case AKEYCODE_DEL:
+        return Keyboard::KEY_BACKSPACE;
+    case AKEYCODE_GRAVE:
+        return Keyboard::KEY_GRAVE;
+    case AKEYCODE_MINUS:
+        return Keyboard::KEY_MINUS;
+    case AKEYCODE_EQUALS:
+        return Keyboard::KEY_EQUAL;
+    case AKEYCODE_LEFT_BRACKET:
+        return Keyboard::KEY_LEFT_BRACKET;
+    case AKEYCODE_RIGHT_BRACKET:
+        return Keyboard::KEY_RIGHT_BRACKET;
+    case AKEYCODE_BACKSLASH:
+        return Keyboard::KEY_BACK_SLASH;
+    case AKEYCODE_SEMICOLON:
+        return Keyboard::KEY_SEMICOLON;
+    case AKEYCODE_APOSTROPHE:
+        return Keyboard::KEY_APOSTROPHE;
+    case AKEYCODE_SLASH:
+        return Keyboard::KEY_SLASH;
+    case AKEYCODE_AT:
+        return Keyboard::KEY_AT;
+    case AKEYCODE_PLUS:
+        return Keyboard::KEY_PLUS;
+    case AKEYCODE_PAGE_UP:
+        return Keyboard::KEY_PG_UP;
+    case AKEYCODE_PAGE_DOWN:
+        return Keyboard::KEY_PG_DOWN;
+    case AKEYCODE_MENU:
+        return Keyboard::KEY_MENU;
+    case AKEYCODE_SEARCH:
+        return Keyboard::KEY_SEARCH;
     
-        case AKEYCODE_BACK:
-            return Keyboard::KEY_ESCAPE;
-        default:
-            return Keyboard::KEY_NONE;
+    case AKEYCODE_BACK:
+        return Keyboard::KEY_ESCAPE;
+    default:
+        return Keyboard::KEY_NONE;
     }
 }
 
@@ -821,311 +823,311 @@ static int32_t engine_handle_input(struct android_app* app, AInputEvent* event)
         {
             switch (action & AMOTION_EVENT_ACTION_MASK)
             {
-                case AMOTION_EVENT_ACTION_DOWN:
+            case AMOTION_EVENT_ACTION_DOWN:
+                {
+                    pointerId = AMotionEvent_getPointerId(event, 0);
+                    x = AMotionEvent_getX(event, 0);
+                    y = AMotionEvent_getY(event, 0);
+
+                    // Gesture handling
+                    if ( __gestureEventsProcessed.test(Gesture::GESTURE_TAP) ||
+                            __gestureEventsProcessed.test(Gesture::GESTURE_SWIPE) ||
+                            __gestureEventsProcessed.test(Gesture::GESTURE_DRAG) ||
+                            __gestureEventsProcessed.test(Gesture::GESTURE_DROP) ||
+                            __gestureEventsProcessed.test(Gesture::GESTURE_PINCH) ||
+                            __gestureEventsProcessed.test(Gesture::GESTURE_LONG_TAP))
                     {
-                        pointerId = AMotionEvent_getPointerId(event, 0);
-                        x = AMotionEvent_getX(event, 0);
-                        y = AMotionEvent_getY(event, 0);
-
-                        // Gesture handling
-                        if ( __gestureEventsProcessed.test(Gesture::GESTURE_TAP) ||
-                             __gestureEventsProcessed.test(Gesture::GESTURE_SWIPE) ||
-                             __gestureEventsProcessed.test(Gesture::GESTURE_DRAG) ||
-                             __gestureEventsProcessed.test(Gesture::GESTURE_DROP) ||
-                             __gestureEventsProcessed.test(Gesture::GESTURE_PINCH) ||
-                             __gestureEventsProcessed.test(Gesture::GESTURE_LONG_TAP))
-                        {
-                            __pointer0.pressed = true;
-                            __pointer0.time = Game::getInstance()->getAbsoluteTime();
-                            __pointer0.pointerId = pointerId;
-                            __pointer0.x = x;
-                            __pointer0.y = y;
-						    __gesturePointer0CurrentPosition = __gesturePointer0LastPosition = std::pair<int, int>(x, y);
-                        }
-
-                        // Primary pointer down.
-                        gameplay::Platform::touchEventInternal(Touch::TOUCH_PRESS, x, y, pointerId);
-                        __primaryTouchId = pointerId;
+                        __pointer0.pressed = true;
+                        __pointer0.time = Game::getInstance()->getAbsoluteTime();
+                        __pointer0.pointerId = pointerId;
+                        __pointer0.x = x;
+                        __pointer0.y = y;
+						__gesturePointer0CurrentPosition = __gesturePointer0LastPosition = std::pair<int, int>(x, y);
                     }
-                    break;
 
-                case AMOTION_EVENT_ACTION_UP:
-                    {
-                        pointerId = AMotionEvent_getPointerId(event, 0);
-                        x = AMotionEvent_getX(event, 0);
-                        y = AMotionEvent_getY(event, 0);
+                    // Primary pointer down.
+                    gameplay::Platform::touchEventInternal(Touch::TOUCH_PRESS, x, y, pointerId);
+                    __primaryTouchId = pointerId;
+                }
+                break;
+
+            case AMOTION_EVENT_ACTION_UP:
+                {
+                    pointerId = AMotionEvent_getPointerId(event, 0);
+                    x = AMotionEvent_getX(event, 0);
+                    y = AMotionEvent_getY(event, 0);
                         
-                        // Gestures
-                        bool gestureDetected = false;
-					    if (__pointer0.pressed &&  __pointer0.pointerId == pointerId && !Form::getActiveControl())
-                        {
-                            int deltaX = x - __pointer0.x;
-                            int deltaY = y - __pointer0.y;
-						
-                            // Test for drop
-                          	if (__gesturePinching)
-						    {
-							    __gesturePinching = false;
-							    gestureDetected = true;
-						    }
-						    else if (__gestureDraging)
-                            {
-                                if (__gestureEventsProcessed.test(Gesture::GESTURE_DROP))
-                                {
-                                    gameplay::Platform::gestureDropEventInternal(x, y);
-                                    gestureDetected = true;
-                                }
-                                __gestureDraging = false;
-                            }
-                            // Test for swipe
-                            else if (__gestureEventsProcessed.test(Gesture::GESTURE_SWIPE) &&
-                                gameplay::Game::getInstance()->getAbsoluteTime() - __pointer0.time < GESTURE_SWIPE_DURATION_MAX && 
-                                (abs(deltaX) > GESTURE_SWIPE_DISTANCE_MIN || abs(deltaY) > GESTURE_SWIPE_DISTANCE_MIN) )
-                            {
-                                int direction = 0;
-                                if ( abs(deltaX) > abs(deltaY) )
-                                {
-                                    if (deltaX > 0)
-                                        direction = gameplay::Gesture::SWIPE_DIRECTION_RIGHT;
-                                    else if (deltaX < 0)
-                                        direction = gameplay::Gesture::SWIPE_DIRECTION_LEFT;
-                                }
-                                else
-                                {
-                                    if (deltaY > 0)
-                                        direction = gameplay::Gesture::SWIPE_DIRECTION_DOWN;
-                                    else if (deltaY < 0)
-                                        direction = gameplay::Gesture::SWIPE_DIRECTION_UP;
-                                }
-                                gameplay::Platform::gestureSwipeEventInternal(x, y, direction);
-                                gestureDetected = true;
-                            }
-                            // Test for tap
-                            else if(__gestureEventsProcessed.test(Gesture::GESTURE_TAP) &&
-                                   gameplay::Game::getInstance()->getAbsoluteTime() - __pointer0.time < GESTURE_TAP_DURATION_MAX)
-                            {
-                                gameplay::Platform::gestureTapEventInternal(x, y);
-                                gestureDetected = true;
-                            }
-                            // Test for long tap
-                            else if(__gestureEventsProcessed.test(Gesture::GESTURE_LONG_TAP) &&
-                                   gameplay::Game::getInstance()->getAbsoluteTime() - __pointer0.time >= GESTURE_LONG_TAP_DURATION_MIN)
-                            {
-                                gameplay::Platform::gestureLongTapEventInternal(x, y, gameplay::Game::getInstance()->getAbsoluteTime() - __pointer0.time);
-                                gestureDetected = true;
-                            }    
-                        }
-					    __pointer0.pressed = false;
-
-                        if (!gestureDetected && (__multiTouch || __primaryTouchId == pointerId) )
-                        {
-                            gameplay::Platform::touchEventInternal(Touch::TOUCH_RELEASE, x, y, pointerId);
-                        }
-                        __primaryTouchId = -1;
-                    }
-                    break;
-
-                case AMOTION_EVENT_ACTION_POINTER_DOWN:
+                    // Gestures
+                    bool gestureDetected = false;
+					if (__pointer0.pressed &&  __pointer0.pointerId == pointerId && !Form::getActiveControl())
                     {
-                        pointerIndex = (action & AMOTION_EVENT_ACTION_POINTER_INDEX_MASK) >> AMOTION_EVENT_ACTION_POINTER_INDEX_SHIFT;
-                        pointerId = AMotionEvent_getPointerId(event, pointerIndex);
-                        x = AMotionEvent_getX(event, pointerIndex);
-                        y = AMotionEvent_getY(event, pointerIndex);
-
-                        // Gesture handling
-                        if ( __gestureEventsProcessed.test(Gesture::GESTURE_TAP) ||
-                             __gestureEventsProcessed.test(Gesture::GESTURE_SWIPE) ||
-                             __gestureEventsProcessed.test(Gesture::GESTURE_DRAG) ||
-                             __gestureEventsProcessed.test(Gesture::GESTURE_DROP) ||
-                             __gestureEventsProcessed.test(Gesture::GESTURE_PINCH) ||
-                             __gestureEventsProcessed.test(Gesture::GESTURE_LONG_TAP))
-                        {
-                            __pointer1.pressed = true;
-                            __pointer1.time = Game::getInstance()->getAbsoluteTime();
-                            __pointer1.pointerId = pointerId;
-                            __pointer1.x = x;
-                            __pointer1.y = y;
-                        	__gesturePointer1CurrentPosition = __gesturePointer1LastPosition = std::pair<int, int>(x, y);
-					    }
-
-                        // Non-primary pointer down.
-                        if (__multiTouch)
-                        {
-                            gameplay::Platform::touchEventInternal(Touch::TOUCH_PRESS, 
-                                                                   AMotionEvent_getX(event, pointerIndex), 
-                                                                   AMotionEvent_getY(event, pointerIndex), pointerId);
-                        }
-                    }
-                    break;
-
-                case AMOTION_EVENT_ACTION_POINTER_UP:
-                    {
-                        pointerIndex = (action & AMOTION_EVENT_ACTION_POINTER_INDEX_MASK) >> AMOTION_EVENT_ACTION_POINTER_INDEX_SHIFT;
-                        pointerId = AMotionEvent_getPointerId(event, pointerIndex);
-                        x = AMotionEvent_getX(event, pointerIndex);
-                        y = AMotionEvent_getY(event, pointerIndex);
-
-                        bool gestureDetected = false;
-                        if (__pointer1.pressed &&  __pointer1.pointerId == pointerId && !Form::getActiveControl())
-                        {
-                            int deltaX = x - __pointer1.x;
-                            int deltaY = y - __pointer1.y;
+                        int deltaX = x - __pointer0.x;
+                        int deltaY = y - __pointer0.y;
 						
-						    if (__gesturePinching)
-						    {
-							    __gesturePinching = false;
-							    gestureDetected = true;
-						    }
-						    // Test for swipe
-						    else if (__gestureEventsProcessed.test(Gesture::GESTURE_SWIPE) &&
-                                gameplay::Game::getInstance()->getAbsoluteTime() - __pointer1.time < GESTURE_SWIPE_DURATION_MAX && 
-                                (abs(deltaX) > GESTURE_SWIPE_DISTANCE_MIN || abs(deltaY) > GESTURE_SWIPE_DISTANCE_MIN) )
+                        // Test for drop
+                        if (__gesturePinching)
+						{
+							__gesturePinching = false;
+							gestureDetected = true;
+						}
+						else if (__gestureDraging)
+                        {
+                            if (__gestureEventsProcessed.test(Gesture::GESTURE_DROP))
                             {
-                                int direction = 0;
+                                gameplay::Platform::gestureDropEventInternal(x, y);
+                                gestureDetected = true;
+                            }
+                            __gestureDraging = false;
+                        }
+                        // Test for swipe
+                        else if (__gestureEventsProcessed.test(Gesture::GESTURE_SWIPE) &&
+                            gameplay::Game::getInstance()->getAbsoluteTime() - __pointer0.time < GESTURE_SWIPE_DURATION_MAX && 
+                            (abs(deltaX) > GESTURE_SWIPE_DISTANCE_MIN || abs(deltaY) > GESTURE_SWIPE_DISTANCE_MIN) )
+                        {
+                            int direction = 0;
+                            if ( abs(deltaX) > abs(deltaY) )
+                            {
                                 if (deltaX > 0)
-                                    direction |= gameplay::Gesture::SWIPE_DIRECTION_RIGHT;
+                                    direction = gameplay::Gesture::SWIPE_DIRECTION_RIGHT;
                                 else if (deltaX < 0)
-                                    direction |= gameplay::Gesture::SWIPE_DIRECTION_LEFT;
-                                
+                                    direction = gameplay::Gesture::SWIPE_DIRECTION_LEFT;
+                            }
+                            else
+                            {
                                 if (deltaY > 0)
-                                    direction |= gameplay::Gesture::SWIPE_DIRECTION_DOWN;
+                                    direction = gameplay::Gesture::SWIPE_DIRECTION_DOWN;
                                 else if (deltaY < 0)
-                                    direction |= gameplay::Gesture::SWIPE_DIRECTION_UP;
-
-                                gameplay::Platform::gestureSwipeEventInternal(x, y, direction);
-                                gestureDetected = true;
+                                    direction = gameplay::Gesture::SWIPE_DIRECTION_UP;
                             }
-                            else if(__gestureEventsProcessed.test(Gesture::GESTURE_TAP) &&
-                                   gameplay::Game::getInstance()->getAbsoluteTime() - __pointer1.time < GESTURE_TAP_DURATION_MAX)
-                            {
-                                gameplay::Platform::gestureTapEventInternal(x, y);
-                                gestureDetected = true;
-                            }
-                            else if(__gestureEventsProcessed.test(Gesture::GESTURE_LONG_TAP) &&
-                                   gameplay::Game::getInstance()->getAbsoluteTime() - __pointer1.time >= GESTURE_LONG_TAP_DURATION_MIN)
-                            {
-                                gameplay::Platform::gestureLongTapEventInternal(x, y, gameplay::Game::getInstance()->getAbsoluteTime() - __pointer1.time);
-                                gestureDetected = true;
-                            }    
+                            gameplay::Platform::gestureSwipeEventInternal(x, y, direction);
+                            gestureDetected = true;
                         }
-					    __pointer1.pressed = false;
-
-                        if (!gestureDetected && (__multiTouch || __primaryTouchId == pointerId) )
+                        // Test for tap
+                        else if(__gestureEventsProcessed.test(Gesture::GESTURE_TAP) &&
+                                gameplay::Game::getInstance()->getAbsoluteTime() - __pointer0.time < GESTURE_TAP_DURATION_MAX)
                         {
-                            gameplay::Platform::touchEventInternal(Touch::TOUCH_RELEASE, 
-                                                                   AMotionEvent_getX(event, pointerIndex), 
-                                                                   AMotionEvent_getY(event, pointerIndex), pointerId);
+                            gameplay::Platform::gestureTapEventInternal(x, y);
+                            gestureDetected = true;
                         }
-                        if (__primaryTouchId == pointerId)
-                            __primaryTouchId = -1;
+                        // Test for long tap
+                        else if(__gestureEventsProcessed.test(Gesture::GESTURE_LONG_TAP) &&
+                                gameplay::Game::getInstance()->getAbsoluteTime() - __pointer0.time >= GESTURE_LONG_TAP_DURATION_MIN)
+                        {
+                            gameplay::Platform::gestureLongTapEventInternal(x, y, gameplay::Game::getInstance()->getAbsoluteTime() - __pointer0.time);
+                            gestureDetected = true;
+                        }    
                     }
-                    break;
+					__pointer0.pressed = false;
 
-                case AMOTION_EVENT_ACTION_MOVE:
+                    if (!gestureDetected && (__multiTouch || __primaryTouchId == pointerId) )
                     {
-                        // ACTION_MOVE events are batched, unlike the other events.
-                        pointerCount = AMotionEvent_getPointerCount(event);
-                        for (size_t i = 0; i < pointerCount; ++i)
+                        gameplay::Platform::touchEventInternal(Touch::TOUCH_RELEASE, x, y, pointerId);
+                    }
+                    __primaryTouchId = -1;
+                }
+                break;
+
+            case AMOTION_EVENT_ACTION_POINTER_DOWN:
+                {
+                    pointerIndex = (action & AMOTION_EVENT_ACTION_POINTER_INDEX_MASK) >> AMOTION_EVENT_ACTION_POINTER_INDEX_SHIFT;
+                    pointerId = AMotionEvent_getPointerId(event, pointerIndex);
+                    x = AMotionEvent_getX(event, pointerIndex);
+                    y = AMotionEvent_getY(event, pointerIndex);
+
+                    // Gesture handling
+                    if ( __gestureEventsProcessed.test(Gesture::GESTURE_TAP) ||
+                            __gestureEventsProcessed.test(Gesture::GESTURE_SWIPE) ||
+                            __gestureEventsProcessed.test(Gesture::GESTURE_DRAG) ||
+                            __gestureEventsProcessed.test(Gesture::GESTURE_DROP) ||
+                            __gestureEventsProcessed.test(Gesture::GESTURE_PINCH) ||
+                            __gestureEventsProcessed.test(Gesture::GESTURE_LONG_TAP))
+                    {
+                        __pointer1.pressed = true;
+                        __pointer1.time = Game::getInstance()->getAbsoluteTime();
+                        __pointer1.pointerId = pointerId;
+                        __pointer1.x = x;
+                        __pointer1.y = y;
+                        __gesturePointer1CurrentPosition = __gesturePointer1LastPosition = std::pair<int, int>(x, y);
+					}
+
+                    // Non-primary pointer down.
+                    if (__multiTouch)
+                    {
+                        gameplay::Platform::touchEventInternal(Touch::TOUCH_PRESS, 
+                                                                AMotionEvent_getX(event, pointerIndex), 
+                                                                AMotionEvent_getY(event, pointerIndex), pointerId);
+                    }
+                }
+                break;
+
+            case AMOTION_EVENT_ACTION_POINTER_UP:
+                {
+                    pointerIndex = (action & AMOTION_EVENT_ACTION_POINTER_INDEX_MASK) >> AMOTION_EVENT_ACTION_POINTER_INDEX_SHIFT;
+                    pointerId = AMotionEvent_getPointerId(event, pointerIndex);
+                    x = AMotionEvent_getX(event, pointerIndex);
+                    y = AMotionEvent_getY(event, pointerIndex);
+
+                    bool gestureDetected = false;
+                    if (__pointer1.pressed &&  __pointer1.pointerId == pointerId && !Form::getActiveControl())
+                    {
+                        int deltaX = x - __pointer1.x;
+                        int deltaY = y - __pointer1.y;
+						
+						if (__gesturePinching)
+						{
+							__gesturePinching = false;
+							gestureDetected = true;
+						}
+						// Test for swipe
+						else if (__gestureEventsProcessed.test(Gesture::GESTURE_SWIPE) &&
+                            gameplay::Game::getInstance()->getAbsoluteTime() - __pointer1.time < GESTURE_SWIPE_DURATION_MAX && 
+                            (abs(deltaX) > GESTURE_SWIPE_DISTANCE_MIN || abs(deltaY) > GESTURE_SWIPE_DISTANCE_MIN) )
                         {
-                            pointerId = AMotionEvent_getPointerId(event, i);
-                            x = AMotionEvent_getX(event, i);
-                            y = AMotionEvent_getY(event, i);
-                            
-                            bool gestureDetected = false;
-						    if (__pointer0.pressed && !Form::getActiveControl())
-						    {
-							    //The two pointers are pressed and the event was done by one of it
-							    if (__pointer1.pressed && (pointerId == __pointer0.pointerId || pointerId == __pointer1.pointerId))
-							    {
-								    if (__pointer0.pointerId == __pointer1.pointerId)
-								    {
-									    __gesturePinching = false;
-									    break;
-								    }
-								    //Test for pinch
-								    if (__gestureEventsProcessed.test(Gesture::GESTURE_PINCH))
-								    {
-									    int pointer0Distance, pointer1Distance;
-
-									    if (__pointer0.pointerId == pointerId)
-									    {
-										    __gesturePointer0LastPosition = __gesturePointer0CurrentPosition;
-										    __gesturePointer0CurrentPosition = std::pair<int, int>(x, y);
-										    __gesturePointer0Delta = sqrt(pow(static_cast<float>(x - __pointer0.x), 2) +
-																	    pow(static_cast<float>(y - __pointer0.y), 2));
-									    }
-									    else
-									    {
-										    __gesturePointer1LastPosition = __gesturePointer1CurrentPosition;
-										    __gesturePointer1CurrentPosition = std::pair<int, int>(x, y);
-										    __gesturePointer1Delta = sqrt(pow(static_cast<float>(x - __pointer1.x), 2) +
-																	    pow(static_cast<float>(y - __pointer1.y), 2));
-									    }
-									    if (!__gesturePinching &&
-										    __gesturePointer0Delta >= GESTURE_PINCH_DISTANCE_MIN &&
-										    __gesturePointer1Delta >= GESTURE_PINCH_DISTANCE_MIN)
-									    {
-										    __gesturePinching = true;
-										    __gesturePinchCentroid = std::pair<int, int>((__pointer0.x + __pointer1.x) / 2,
-																					    (__pointer0.y + __pointer1.y) / 2);
-									    }
-									    if (__gesturePinching)
-									    {
-										    int currentDistancePointer0, currentDistancePointer1;
-										    int lastDistancePointer0, lastDistancePointer1;
-										    float scale;
-
-										    currentDistancePointer0 = sqrt(pow(static_cast<float>(__gesturePinchCentroid.first - __gesturePointer0CurrentPosition.first), 2) + 
-                                                                           pow(static_cast<float>(__gesturePinchCentroid.second - __gesturePointer0CurrentPosition.second), 2));
-										    lastDistancePointer0 = sqrt(pow(static_cast<float>(__gesturePinchCentroid.first - __gesturePointer0LastPosition.first), 2) + 
-                                                                        pow(static_cast<float>(__gesturePinchCentroid.second - __gesturePointer0LastPosition.second), 2));
-										    currentDistancePointer1 = sqrt(pow(static_cast<float>(__gesturePinchCentroid.first - __gesturePointer1CurrentPosition.first), 2) + 
-                                                                           pow(static_cast<float>(__gesturePinchCentroid.second - __gesturePointer1CurrentPosition.second), 2));
-										    lastDistancePointer1 = sqrt(pow(static_cast<float>(__gesturePinchCentroid.first - __gesturePointer1LastPosition.first), 2) + 
-                                                                        pow(static_cast<float>(__gesturePinchCentroid.second - __gesturePointer1LastPosition.second), 2));
-										    if (pointerId == __pointer0.pointerId)
-											    scale = ((float) currentDistancePointer0) / ((float) lastDistancePointer0);
-										    else
-											    scale = ((float) currentDistancePointer1) / ((float) lastDistancePointer1);
-										    if (((currentDistancePointer0 >= lastDistancePointer0) && (currentDistancePointer1 >= lastDistancePointer1)) ||
-											    ((currentDistancePointer0 <= lastDistancePointer0) && (currentDistancePointer1 <= lastDistancePointer1)))
-										    {
-											    gameplay::Platform::gesturePinchEventInternal(__gesturePinchCentroid.first, __gesturePinchCentroid.second, scale);	
-											    gestureDetected = true;
-										    }
-										    else
-											    __gesturePinching = false;
-									    }
-								    }
-							    }
-							    // Only the primary pointer is done and the event was done by it
-							    else if (!gestureDetected && pointerId == __pointer0.pointerId)
-							    {
-								    //Test for drag
-								    if (__gestureEventsProcessed.test(Gesture::GESTURE_DRAG))
-								    {
-                                		int delta = sqrt(pow(static_cast<float>(x - __pointer0.x), 2) +
-													    pow(static_cast<float>(y - __pointer0.y), 2));
+                            int direction = 0;
+                            if (deltaX > 0)
+                                direction |= gameplay::Gesture::SWIPE_DIRECTION_RIGHT;
+                            else if (deltaX < 0)
+                                direction |= gameplay::Gesture::SWIPE_DIRECTION_LEFT;
                                 
-                                		if ((__gestureDraging || __gestureEventsProcessed.test(Gesture::GESTURE_DRAG)) &&
-                                     		(gameplay::Game::getInstance()->getAbsoluteTime() - __pointer0.time >= GESTURE_DRAG_START_DURATION_MIN) &&
-                                    		(delta >= GESTURE_DRAG_DISTANCE_MIN))
-                                		{
-                                    		gameplay::Platform::gestureDragEventInternal(x, y);
-                                    		__gestureDraging = true;
-                                    		gestureDetected = true;
-                                		}
-								    }
-							    }
-						    }
+                            if (deltaY > 0)
+                                direction |= gameplay::Gesture::SWIPE_DIRECTION_DOWN;
+                            else if (deltaY < 0)
+                                direction |= gameplay::Gesture::SWIPE_DIRECTION_UP;
 
-                            if (!gestureDetected && (__multiTouch || __primaryTouchId == pointerId))
-                            {
-                                gameplay::Platform::touchEventInternal(Touch::TOUCH_MOVE, AMotionEvent_getX(event, i), AMotionEvent_getY(event, i), pointerId);
-                            }
-                       }
-                   }
-                   break;
+                            gameplay::Platform::gestureSwipeEventInternal(x, y, direction);
+                            gestureDetected = true;
+                        }
+                        else if(__gestureEventsProcessed.test(Gesture::GESTURE_TAP) &&
+                                gameplay::Game::getInstance()->getAbsoluteTime() - __pointer1.time < GESTURE_TAP_DURATION_MAX)
+                        {
+                            gameplay::Platform::gestureTapEventInternal(x, y);
+                            gestureDetected = true;
+                        }
+                        else if(__gestureEventsProcessed.test(Gesture::GESTURE_LONG_TAP) &&
+                                gameplay::Game::getInstance()->getAbsoluteTime() - __pointer1.time >= GESTURE_LONG_TAP_DURATION_MIN)
+                        {
+                            gameplay::Platform::gestureLongTapEventInternal(x, y, gameplay::Game::getInstance()->getAbsoluteTime() - __pointer1.time);
+                            gestureDetected = true;
+                        }    
+                    }
+					__pointer1.pressed = false;
+
+                    if (!gestureDetected && (__multiTouch || __primaryTouchId == pointerId) )
+                    {
+                        gameplay::Platform::touchEventInternal(Touch::TOUCH_RELEASE, 
+                                                                AMotionEvent_getX(event, pointerIndex), 
+                                                                AMotionEvent_getY(event, pointerIndex), pointerId);
+                    }
+                    if (__primaryTouchId == pointerId)
+                        __primaryTouchId = -1;
+                }
+                break;
+
+            case AMOTION_EVENT_ACTION_MOVE:
+                {
+                    // ACTION_MOVE events are batched, unlike the other events.
+                    pointerCount = AMotionEvent_getPointerCount(event);
+                    for (size_t i = 0; i < pointerCount; ++i)
+                    {
+                        pointerId = AMotionEvent_getPointerId(event, i);
+                        x = AMotionEvent_getX(event, i);
+                        y = AMotionEvent_getY(event, i);
+                            
+                        bool gestureDetected = false;
+						if (__pointer0.pressed && !Form::getActiveControl())
+						{
+							//The two pointers are pressed and the event was done by one of it
+							if (__pointer1.pressed && (pointerId == __pointer0.pointerId || pointerId == __pointer1.pointerId))
+							{
+								if (__pointer0.pointerId == __pointer1.pointerId)
+								{
+									__gesturePinching = false;
+									break;
+								}
+								//Test for pinch
+								if (__gestureEventsProcessed.test(Gesture::GESTURE_PINCH))
+								{
+									int pointer0Distance, pointer1Distance;
+
+									if (__pointer0.pointerId == pointerId)
+									{
+										__gesturePointer0LastPosition = __gesturePointer0CurrentPosition;
+										__gesturePointer0CurrentPosition = std::pair<int, int>(x, y);
+										__gesturePointer0Delta = sqrt(pow(static_cast<float>(x - __pointer0.x), 2) +
+																	pow(static_cast<float>(y - __pointer0.y), 2));
+									}
+									else
+									{
+										__gesturePointer1LastPosition = __gesturePointer1CurrentPosition;
+										__gesturePointer1CurrentPosition = std::pair<int, int>(x, y);
+										__gesturePointer1Delta = sqrt(pow(static_cast<float>(x - __pointer1.x), 2) +
+																	pow(static_cast<float>(y - __pointer1.y), 2));
+									}
+									if (!__gesturePinching &&
+										__gesturePointer0Delta >= GESTURE_PINCH_DISTANCE_MIN &&
+										__gesturePointer1Delta >= GESTURE_PINCH_DISTANCE_MIN)
+									{
+										__gesturePinching = true;
+										__gesturePinchCentroid = std::pair<int, int>((__pointer0.x + __pointer1.x) / 2,
+																					(__pointer0.y + __pointer1.y) / 2);
+									}
+									if (__gesturePinching)
+									{
+										int currentDistancePointer0, currentDistancePointer1;
+										int lastDistancePointer0, lastDistancePointer1;
+										float scale;
+
+										currentDistancePointer0 = sqrt(pow(static_cast<float>(__gesturePinchCentroid.first - __gesturePointer0CurrentPosition.first), 2) + 
+                                                                        pow(static_cast<float>(__gesturePinchCentroid.second - __gesturePointer0CurrentPosition.second), 2));
+										lastDistancePointer0 = sqrt(pow(static_cast<float>(__gesturePinchCentroid.first - __gesturePointer0LastPosition.first), 2) + 
+                                                                    pow(static_cast<float>(__gesturePinchCentroid.second - __gesturePointer0LastPosition.second), 2));
+										currentDistancePointer1 = sqrt(pow(static_cast<float>(__gesturePinchCentroid.first - __gesturePointer1CurrentPosition.first), 2) + 
+                                                                        pow(static_cast<float>(__gesturePinchCentroid.second - __gesturePointer1CurrentPosition.second), 2));
+										lastDistancePointer1 = sqrt(pow(static_cast<float>(__gesturePinchCentroid.first - __gesturePointer1LastPosition.first), 2) + 
+                                                                    pow(static_cast<float>(__gesturePinchCentroid.second - __gesturePointer1LastPosition.second), 2));
+										if (pointerId == __pointer0.pointerId)
+											scale = ((float) currentDistancePointer0) / ((float) lastDistancePointer0);
+										else
+											scale = ((float) currentDistancePointer1) / ((float) lastDistancePointer1);
+										if (((currentDistancePointer0 >= lastDistancePointer0) && (currentDistancePointer1 >= lastDistancePointer1)) ||
+											((currentDistancePointer0 <= lastDistancePointer0) && (currentDistancePointer1 <= lastDistancePointer1)))
+										{
+											gameplay::Platform::gesturePinchEventInternal(__gesturePinchCentroid.first, __gesturePinchCentroid.second, scale);	
+											gestureDetected = true;
+										}
+										else
+											__gesturePinching = false;
+									}
+								}
+							}
+							// Only the primary pointer is done and the event was done by it
+							else if (!gestureDetected && pointerId == __pointer0.pointerId)
+							{
+								//Test for drag
+								if (__gestureEventsProcessed.test(Gesture::GESTURE_DRAG))
+								{
+                                	int delta = sqrt(pow(static_cast<float>(x - __pointer0.x), 2) +
+													pow(static_cast<float>(y - __pointer0.y), 2));
+                                
+                                	if ((__gestureDraging || __gestureEventsProcessed.test(Gesture::GESTURE_DRAG)) &&
+                                     	(gameplay::Game::getInstance()->getAbsoluteTime() - __pointer0.time >= GESTURE_DRAG_START_DURATION_MIN) &&
+                                    	(delta >= GESTURE_DRAG_DISTANCE_MIN))
+                                	{
+                                    	gameplay::Platform::gestureDragEventInternal(x, y);
+                                    	__gestureDraging = true;
+                                    	gestureDetected = true;
+                                	}
+								}
+							}
+						}
+
+                        if (!gestureDetected && (__multiTouch || __primaryTouchId == pointerId))
+                        {
+                            gameplay::Platform::touchEventInternal(Touch::TOUCH_MOVE, AMotionEvent_getX(event, i), AMotionEvent_getY(event, i), pointerId);
+                        }
+                    }
+                }
+                break;
             }
         }
         return 1;
@@ -1142,29 +1144,29 @@ static int32_t engine_handle_input(struct android_app* app, AInputEvent* event)
 
         switch(action)
         {
-            case AKEY_EVENT_ACTION_DOWN:
-                if (((source & AINPUT_SOURCE_GAMEPAD) == AINPUT_SOURCE_GAMEPAD) || ((source & AINPUT_SOURCE_JOYSTICK) == AINPUT_SOURCE_JOYSTICK))
-                {
-                    gameplay::Platform::gamepadButtonPressedEventInternal(deviceId, gameplay::getGamepadButtonMapping(keycode));
-                }
-                else
-                {
-                    gameplay::Platform::keyEventInternal(Keyboard::KEY_PRESS, getKey(keycode, metastate));
-                    if (int character = getUnicode(keycode, metastate))
-                        gameplay::Platform::keyEventInternal(Keyboard::KEY_CHAR, character);
-                }
-                break;
+        case AKEY_EVENT_ACTION_DOWN:
+            if (((source & AINPUT_SOURCE_GAMEPAD) == AINPUT_SOURCE_GAMEPAD) || ((source & AINPUT_SOURCE_JOYSTICK) == AINPUT_SOURCE_JOYSTICK))
+            {
+                gameplay::Platform::gamepadButtonPressedEventInternal(deviceId, gameplay::getGamepadButtonMapping(keycode));
+            }
+            else
+            {
+                gameplay::Platform::keyEventInternal(Keyboard::KEY_PRESS, getKey(keycode, metastate));
+                if (int character = getUnicode(keycode, metastate))
+                    gameplay::Platform::keyEventInternal(Keyboard::KEY_CHAR, character);
+            }
+            break;
                     
-            case AKEY_EVENT_ACTION_UP:
-                if (((source & AINPUT_SOURCE_GAMEPAD) == AINPUT_SOURCE_GAMEPAD) || ((source & AINPUT_SOURCE_JOYSTICK) == AINPUT_SOURCE_JOYSTICK))
-                {
-                    gameplay::Platform::gamepadButtonReleasedEventInternal(deviceId, gameplay::getGamepadButtonMapping(keycode));
-                }
-                else
-                {
-                    gameplay::Platform::keyEventInternal(Keyboard::KEY_RELEASE, getKey(keycode, metastate));
-                }
-                break;
+        case AKEY_EVENT_ACTION_UP:
+            if (((source & AINPUT_SOURCE_GAMEPAD) == AINPUT_SOURCE_GAMEPAD) || ((source & AINPUT_SOURCE_JOYSTICK) == AINPUT_SOURCE_JOYSTICK))
+            {
+                gameplay::Platform::gamepadButtonReleasedEventInternal(deviceId, gameplay::getGamepadButtonMapping(keycode));
+            }
+            else
+            {
+                gameplay::Platform::keyEventInternal(Keyboard::KEY_RELEASE, getKey(keycode, metastate));
+            }
+            break;
         }
         return 1;
     }
@@ -1176,68 +1178,68 @@ static void engine_handle_cmd(struct android_app* app, int32_t cmd)
 {
     switch (cmd) 
     {
-        case APP_CMD_INIT_WINDOW:
-            if (app->window != NULL)
-            {
-                initEGL();
-                __initialized = true;
-            }
-            break;
-        case APP_CMD_TERM_WINDOW:
-            destroyEGLSurface();
-            __initialized = false;
-            break;
-        case APP_CMD_DESTROY:
-            Game::getInstance()->exit();
-            destroyEGLMain();
-            __initialized = false;
-            break;
-        case APP_CMD_PAUSE:
-            Game::getInstance()->pause();
-            __suspended = true;
-            break;
-        case APP_CMD_RESUME:
-            if (__initialized)
-            {
-                Game::getInstance()->resume();
-            }
-            __suspended = false;
-            break;
-        case APP_CMD_LOST_FOCUS:
-            // When our app loses focus, we stop monitoring the sensors.
-            // This is to avoid consuming battery while not being used.
-            if (__accelerometerSensor != NULL)
-            {
-                ASensorEventQueue_disableSensor(__sensorEventQueue, __accelerometerSensor);
-            }
-            if (__gyroscopeSensor != NULL)
-            {
-                ASensorEventQueue_disableSensor(__sensorEventQueue, __gyroscopeSensor);
-            }
-            break;
-        case APP_CMD_GAINED_FOCUS:
-            // When our app gains focus, we start monitoring the sensors.
-            if (__accelerometerSensor != NULL) 
-            {
-                ASensorEventQueue_enableSensor(__sensorEventQueue, __accelerometerSensor);
-                // We'd like to get 60 events per second (in microseconds).
-                ASensorEventQueue_setEventRate(__sensorEventQueue, __accelerometerSensor, (1000L/60)*1000);
-            }
-            if (__gyroscopeSensor != NULL)
-            {
-                ASensorEventQueue_enableSensor(__sensorEventQueue, __gyroscopeSensor);
-                // We'd like to get 60 events per second (in microseconds).
-                ASensorEventQueue_setEventRate(__sensorEventQueue, __gyroscopeSensor, (1000L/60)*1000);
-            }
-            if (Game::getInstance()->getState() == Game::UNINITIALIZED)
-            {
-                Game::getInstance()->run();
-            }
-            else
-            {
-                Game::getInstance()->resume();
-            }
-            break;
+    case APP_CMD_INIT_WINDOW:
+        if (app->window != NULL)
+        {
+            initEGL();
+            __initialized = true;
+        }
+        break;
+    case APP_CMD_TERM_WINDOW:
+        destroyEGLSurface();
+        __initialized = false;
+        break;
+    case APP_CMD_DESTROY:
+        Game::getInstance()->exit();
+        destroyEGLMain();
+        __initialized = false;
+        break;
+    case APP_CMD_PAUSE:
+        Game::getInstance()->pause();
+        __suspended = true;
+        break;
+    case APP_CMD_RESUME:
+        if (__initialized)
+        {
+            Game::getInstance()->resume();
+        }
+        __suspended = false;
+        break;
+    case APP_CMD_LOST_FOCUS:
+        // When our app loses focus, we stop monitoring the sensors.
+        // This is to avoid consuming battery while not being used.
+        if (__accelerometerSensor != NULL)
+        {
+            ASensorEventQueue_disableSensor(__sensorEventQueue, __accelerometerSensor);
+        }
+        if (__gyroscopeSensor != NULL)
+        {
+            ASensorEventQueue_disableSensor(__sensorEventQueue, __gyroscopeSensor);
+        }
+        break;
+    case APP_CMD_GAINED_FOCUS:
+        // When our app gains focus, we start monitoring the sensors.
+        if (__accelerometerSensor != NULL) 
+        {
+            ASensorEventQueue_enableSensor(__sensorEventQueue, __accelerometerSensor);
+            // We'd like to get 60 events per second (in microseconds).
+            ASensorEventQueue_setEventRate(__sensorEventQueue, __accelerometerSensor, (1000L/60)*1000);
+        }
+        if (__gyroscopeSensor != NULL)
+        {
+            ASensorEventQueue_enableSensor(__sensorEventQueue, __gyroscopeSensor);
+            // We'd like to get 60 events per second (in microseconds).
+            ASensorEventQueue_setEventRate(__sensorEventQueue, __gyroscopeSensor, (1000L/60)*1000);
+        }
+        if (Game::getInstance()->getState() == Game::UNINITIALIZED)
+        {
+            Game::getInstance()->run();
+        }
+        else
+        {
+            Game::getInstance()->resume();
+        }
+        break;
     }
 }
 
@@ -1283,28 +1285,33 @@ int Platform::enterMessagePump()
 
     jclass clazz = env->GetObjectClass(activity->clazz);
     jmethodID methodGetExternalStorage = env->GetMethodID(clazz, "getExternalFilesDir", "(Ljava/lang/String;)Ljava/io/File;");
+    LOGI("After getExternalFilesDir...");
 
     jclass clazzFile = env->FindClass("java/io/File");
     jmethodID methodGetPath = env->GetMethodID(clazzFile, "getPath", "()Ljava/lang/String;");
+    LOGI("After getPath...");
 
     // Now has java.io.File object pointing to directory
     jobject objectFile  = env->CallObjectMethod(activity->clazz, methodGetExternalStorage, NULL);
-    
+    LOGI("After call getExternalFilesDir...");
+
     // Now has String object containing path to directory
     jstring stringExternalPath = static_cast<jstring>(env->CallObjectMethod(objectFile, methodGetPath));
     const char* externalPath = env->GetStringUTFChars(stringExternalPath, &isCopy);
+    LOGI("After call getPath...");
 
     // Set the default path to store the resources.
     std::string assetsPath(externalPath);
-    if (externalPath[strlen(externalPath)-1] != '/')
+    if (externalPath[strlen(externalPath) - 1] != '/')
         assetsPath += "/";
 
     FileSystem::setResourcePath(assetsPath.c_str());    
+    LOGI("Set res getPath : %s", assetsPath.c_str());
 
     // Release string data
     env->ReleaseStringUTFChars(stringExternalPath, externalPath);
     jvm->DetachCurrentThread();
-    
+
     // Get the asset manager to get the resources from the .apk file.
     __assetManager = activity->assetManager; 
     
@@ -1317,7 +1324,7 @@ int Platform::enterMessagePump()
     __accelerometerSensor = ASensorManager_getDefaultSensor(__sensorManager, ASENSOR_TYPE_ACCELEROMETER);
     __gyroscopeSensor = ASensorManager_getDefaultSensor(__sensorManager, ASENSOR_TYPE_GYROSCOPE);
     __sensorEventQueue = ASensorManager_createEventQueue(__sensorManager, __state->looper, LOOPER_ID_USER, NULL, NULL);
-    
+
     // Get the initial time.
     clock_gettime(CLOCK_REALTIME, &__timespec);
     __timeStart = timespec2millis(&__timespec);
@@ -1330,11 +1337,13 @@ int Platform::enterMessagePump()
         int events;
         struct android_poll_source* source;
         
-        while ((ident=ALooper_pollAll(!__suspended ? 0 : -1, NULL, &events, (void**)&source)) >= 0) 
+        while ((ident = ALooper_pollAll(!__suspended ? 0 : -1, NULL, &events, (void**)&source)) >= 0) 
         {
             // Process this event.
             if (source != NULL)
+            {
                 source->process(__state, source);
+            }
             
             // If a sensor has data, process it now.
             if (ident == LOOPER_ID_USER && __accelerometerSensor != NULL)

@@ -103,6 +103,7 @@ Texture* Texture::create(const char* path, bool generateMipmaps)
     Texture* texture = NULL;
 
     // Filter loading based on file extension.
+    //GP_INFO("Resource Path : %s", path);
     const char* ext = strrchr(FileSystem::resolvePath(path), '.');
     if (ext)
     {
@@ -113,7 +114,9 @@ Texture* Texture::create(const char* path, bool generateMipmaps)
             {
                 Image* image = Image::create(path);
                 if (image)
+                {
                     texture = create(image, generateMipmaps);
+                }
                 SAFE_RELEASE(image);
             }
             else if (tolower(ext[1]) == 'p' && tolower(ext[2]) == 'v' && tolower(ext[3]) == 'r')
@@ -125,6 +128,11 @@ Texture* Texture::create(const char* path, bool generateMipmaps)
             {
                 // DDS file format (DXT/S3TC) compressed textures
                 texture = createCompressedDDS(path);
+            }
+            else if (tolower(ext[1]) == 'j' && tolower(ext[2]) == 'p' && tolower(ext[3]) == 'g')
+            {
+                // JPG file format compressed textures
+                texture = createCompressedJPG(path);
             }
             break;
         }
@@ -1075,6 +1083,111 @@ Texture* Texture::createCompressedDDS(const char* path)
 
     // Restore the texture id
     GL_ASSERT( glBindTexture((GLenum)__currentTextureType, __currentTextureId) );
+
+    return texture;
+}
+
+Texture* Texture::createCompressedJPG(const char* path)
+{
+    struct jpeg_decompress_struct   cinfo;
+    struct jpeg_error_mgr           jerr;
+    cinfo.err = jpeg_std_error(&jerr);
+    jpeg_create_decompress(&cinfo);
+
+    std::unique_ptr<Stream> stream(FileSystem::open(path));
+    if (stream.get() == NULL || !stream->canRead())
+    {
+        GP_ERROR("Failed to open image file '%s' - %d.", path, errno);
+        return NULL;
+    }
+    unsigned char* src = new unsigned char[stream->length()];
+    stream->read(src, sizeof(unsigned char), stream->length());
+    jpeg_mem_src(&cinfo, src, stream->length());
+    jpeg_read_header(&cinfo, TRUE);
+
+    int size = cinfo.image_width * cinfo.num_components;
+    size += size % 4;   ///< 4字节对齐
+    size *= cinfo.image_height;
+    unsigned char* data = new unsigned char[size];
+
+    jpeg_start_decompress(&cinfo);
+    JSAMPROW row_pointer[1];
+    while (cinfo.output_scanline < cinfo.output_height)
+    {
+        int RealSizeEachLine = (cinfo.image_width * cinfo.num_components) + (cinfo.image_width * cinfo.num_components) % 4; ///< 字节对齐后的实际每行大小
+        row_pointer[0] = (JSAMPROW)&data[(cinfo.output_height - cinfo.output_scanline - 1) * RealSizeEachLine];
+        jpeg_read_scanlines(&cinfo, row_pointer, 1);
+    }
+    jpeg_finish_decompress(&cinfo);
+    delete[] src;
+
+    ///< 将压缩格式数据转换为RGB位图格式
+    //int         pos = 0;
+    //png_bytep*  row_pointers = new png_bytep[cinfo.image_height];
+    //int         nStride = cinfo.num_components * cinfo.image_width;
+    //for (int i = cinfo.image_height - 1; i >= 0; i--)
+    //{
+    //    row_pointers[i] = new png_byte[nStride];
+    //    for (int j = 0; j < nStride; j += cinfo.num_components)
+    //    {
+    //        row_pointers[i][j] = data[pos++];           ///< red
+    //        row_pointers[i][j + 1] = data[pos++];       ///< green
+    //        row_pointers[i][j + 2] = data[pos++];       ///< blue
+    //        if (cinfo.num_components == 4)
+    //        {
+    //            row_pointers[i][j + 3] = data[pos++];   ///< alpha
+    //        }
+    //    }
+    //    pos += nStride % 4;
+    //}
+    //delete[] data;
+    //data = new unsigned char[cinfo.image_height * nStride];
+    //for (unsigned int i = 0; i < cinfo.image_height; ++i)
+    //{
+    //    memcpy(data + (nStride * (cinfo.image_height - 1 - i)), row_pointers[i], nStride);
+    //}
+    ////GP_INFO("File[%s] ColorType : %d height : %d width : %d size : %d", path, cinfo.num_components, cinfo.image_height, cinfo.image_width, nStride * cinfo.image_height);
+    //for (int j = 0; j < cinfo.image_height; j++)
+    //{
+    //    delete[] row_pointers[j];
+    //}
+    //delete[] row_pointers;
+
+    ///< 打印出来图像数据
+    //if (0 == strcmp(path, "res/hello.jpg"))
+    //{
+    //    std::string strTmp;
+    //    for (int i = 0; i < cinfo.image_height * nStride; i++)
+    //    {
+    //        char szTmp[10] = { 0 };
+    //        sprintf(szTmp, "%02X", data[i]);
+    //        strTmp.append(szTmp);
+    //        if (i % 20 == 0)
+    //        {
+    //            GP_INFO("DATA : %s", strTmp.c_str());
+    //            strTmp.assign("");
+    //        }
+    //    }
+    //    if (strTmp.length())
+    //    {
+    //        GP_INFO("DATA : %s", strTmp.c_str());
+    //    }
+    //}
+
+    ///< 返回结果
+    Texture* texture = NULL;
+    Texture::Format textureFormat = Texture::UNKNOWN;
+    if (cinfo.num_components == 3)
+    {
+        textureFormat = Texture::Format::RGB;
+    }
+    else if (cinfo.num_components == 4)
+    {
+        textureFormat = Texture::Format::RGBA;
+    }
+    //GP_WARN("Texture::format = %d", cinfo.num_components);
+    texture = create(textureFormat, cinfo.image_width, cinfo.image_height, data);
+    jpeg_destroy_decompress(&cinfo);
 
     return texture;
 }

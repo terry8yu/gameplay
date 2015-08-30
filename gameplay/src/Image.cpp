@@ -22,7 +22,7 @@ Image* Image::create(const char* path)
     std::unique_ptr<Stream> stream(FileSystem::open(path));
     if (stream.get() == NULL || !stream->canRead())
     {
-        GP_ERROR("Failed to open image file '%s'.", path);
+        GP_ERROR("Failed to open image file '%s' - %d.", path, errno);
         return NULL;
     }
 
@@ -94,12 +94,34 @@ Image* Image::create(const char* path)
     // Allocate image data.
     image->_data = new unsigned char[stride * image->_height];
 
+    //GP_INFO("File[%s] ColorType : %d height : %d width : %d size : %d", path, image->_format, image->_height, image->_width, stride * image->_height);
+
     // Read rows into image data.
     png_bytepp rows = png_get_rows(png, info);
     for (unsigned int i = 0; i < image->_height; ++i)
     {
         memcpy(image->_data+(stride * (image->_height-1-i)), rows[i], stride);
     }
+
+    //if (0 == strcmp(path, "res/hello_jpg.png"))
+    //{
+    //    std::string strTmp;
+    //    for (int i = 0; i < stride * image->_height; i++)
+    //    {
+    //        char szTmp[10] = { 0 };
+    //        sprintf(szTmp, "%02X", image->_data[i]);
+    //        strTmp.append(szTmp);
+    //        if (i % 20 == 0)
+    //        {
+    //            GP_INFO("DATA : %s", strTmp.c_str());
+    //            strTmp.assign("");
+    //        }
+    //    }
+    //    if (strTmp.length())
+    //    {
+    //        GP_INFO("DATA : %s", strTmp.c_str());
+    //    }
+    //}
 
     // Clean up.
     png_destroy_read_struct(&png, &info, NULL);
