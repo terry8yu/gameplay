@@ -1,0 +1,60 @@
+form formBind
+{
+    layout = LAYOUT_ABSOLUTE
+    size = 600, 400
+    batchingEnabled = false
+
+	label title
+	{
+		position = 185, 10
+		text = Title Label
+        fontSize = 32
+	}
+
+	container bindContainer
+	{
+		layout = LAYOUT_ABSOLUTE
+        size = 300, 150
+		position = 100, 50
+        
+        label acctLabel
+        {
+            position = 5, 10
+            size = 80, 40
+            fontSize = 28
+            text = User ID:
+            textAlignment = ALIGN_VCENTER_RIGHT
+        }
+
+        textBox acctTextBox
+        {
+            position = 86, 10
+            fontSize = 28
+            size = 200, 40
+        }
+        
+        label passwdLabel
+        {
+            position = 5, 60
+            size = 80, 40
+            fontSize = 28
+            text = Password:
+            textAlignment = ALIGN_VCENTER_RIGHT
+        }
+
+        textBox passwdTextBox
+        {
+            position = 86, 60
+            fontSize = 28
+            size = 200, 40
+            inputMode = PASSWORD
+        }
+	}
+		
+	button yesButton
+	{
+		position = 120, 210
+        size = 120, 60
+		text = Confirm
+	}
+}

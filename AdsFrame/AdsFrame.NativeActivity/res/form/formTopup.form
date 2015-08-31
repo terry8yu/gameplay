@@ -1,0 +1,14 @@
+form formTopup
+{
+    layout = LAYOUT_ABSOLUTE
+    size = 600, 300
+	consumeInputEvents = false
+
+    label labelTopup
+    {
+        alignment = ALIGN_VCENTER_HCENTER
+        style = Panel
+        size = 200, 50
+        text = The device need to top up!
+    }
+}

@@ -1,0 +1,53 @@
+form formSetting
+{
+    layout = LAYOUT_VERTICAL
+    alignment = ALIGN_TOP_LEFT
+    width = 220
+	consumeInputEvents = false
+
+	radioButton rdoBind
+	{
+		text = Bind Form
+		group = formSetting
+		selected = true
+	}
+
+	radioButton rdoTopup : rdoBind
+	{
+		text = Topup Form
+		selected = false
+	}
+
+	radioButton rdoProgram : rdoTopup
+	{
+		text = Programmatic
+	}
+
+    label labelLine
+    {
+        height = 40
+    }
+
+	radioButton rdoImg1
+	{
+		text = Image1
+		group = rdoImg
+		selected = true
+	}
+
+	radioButton rdoImg2 : rdoImg1
+	{
+		text = Image2
+		selected = false
+	}
+
+	radioButton rdoImg3 : rdoImg2
+	{
+		text = Image3
+	}
+
+	radioButton rdoImg4 : rdoImg2
+	{
+		text = Image4
+	}
+}

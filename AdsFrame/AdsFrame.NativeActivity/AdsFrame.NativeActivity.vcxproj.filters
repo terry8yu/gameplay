@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="android_native_app_glue.h" />
+    <ClInclude Include="AdsFrame.h" />
+    <ClInclude Include="ProgramList.h" />
+    <ClInclude Include="Program.h" />
+    <ClInclude Include="ads.h" />
+    <ClInclude Include="PrmArea.h" />
+    <ClInclude Include="ResFile.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="android_native_app_glue.c" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="AdsFrame.cpp" />
+    <ClCompile Include="ProgramList.cpp" />
+    <ClCompile Include="Program.cpp" />
+    <ClCompile Include="PrmArea.cpp" />
+    <ClCompile Include="ResFile.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="res">
+      <UniqueIdentifier>{9ae0a86a-66c8-487d-adf9-a05202e8eaef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\png">
+      <UniqueIdentifier>{56c80928-2cdb-47b7-9e97-621c2b365c47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\form">
+      <UniqueIdentifier>{a0ea5c67-faef-4c77-b32a-65682d1699ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\font">
+      <UniqueIdentifier>{f220c1c5-5acd-4984-b3e0-8cecc4afe14d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\theme">
+      <UniqueIdentifier>{447b1869-8b7d-47eb-b561-c74fa2b091ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\shader">
+      <UniqueIdentifier>{2423552a-5301-45f6-a890-4fb5ac1407d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\jpg">
+      <UniqueIdentifier>{3328aa8b-913d-489d-8823-12ab79685f0a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\font\arial.gpb">
+      <Filter>res\font</Filter>
+    </None>
+    <None Include="res\font\msyh.gpb">
+      <Filter>res\font</Filter>
+    </None>
+    <None Include="res\font\msyhbd.gpb">
+      <Filter>res\font</Filter>
+    </None>
+    <None Include="res\theme\default.theme">
+      <Filter>res\theme</Filter>
+    </None>
+    <None Include="res\theme\gamepad.theme">
+      <Filter>res\theme</Filter>
+    </None>
+    <None Include="res\shader\colored.frag">
+      <Filter>res\shader</Filter>
+    </None>
+    <None Include="res\shader\colored.vert">
+      <Filter>res\shader</Filter>
+    </None>
+    <None Include="res\shader\font.frag">
+      <Filter>res\shader</Filter>
+    </None>
+    <None Include="res\shader\font.vert">
+      <Filter>res\shader</Filter>
+    </None>
+    <None Include="res\shader\lighting.frag">
+      <Filter>res\shader</Filter>
+    </None>
+    <None Include="res\shader\lighting.vert">
+      <Filter>res\shader</Filter>
+    </None>
+    <None Include="res\shader\skinning.vert">
+      <Filter>res\shader</Filter>
+    </None>
+    <None Include="res\shader\skinning-none.vert">
+      <Filter>res\shader</Filter>
+    </None>
+    <None Include="res\shader\sprite.frag">
+      <Filter>res\shader</Filter>
+    </None>
+    <None Include="res\shader\sprite.vert">
+      <Filter>res\shader</Filter>
+    </None>
+    <None Include="res\shader\terrain.frag">
+      <Filter>res\shader</Filter>
+    </None>
+    <None Include="res\shader\terrain.vert">
+      <Filter>res\shader</Filter>
+    </None>
+    <None Include="res\shader\textured.frag">
+      <Filter>res\shader</Filter>
+    </None>
+    <None Include="res\shader\textured.vert">
+      <Filter>res\shader</Filter>
+    </None>
+    <None Include="res\form\formSetting.form">
+      <Filter>res\form</Filter>
+    </None>
+    <None Include="game.config" />
+    <None Include="res\form\formBind.form">
+      <Filter>res\form</Filter>
+    </None>
+    <None Include="res\form\formTopup.form">
+      <Filter>res\form</Filter>
+    </None>
+    <None Include="res\form\gamepad.form">
+      <Filter>res\form</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\png\default-theme.png">
+      <Filter>res\png</Filter>
+    </Image>
+    <Image Include="res\png\gamepad.png">
+      <Filter>res\png</Filter>
+    </Image>
+    <Image Include="res\png\logo.png">
+      <Filter>res\png</Filter>
+    </Image>
+    <Image Include="res\png\logo_powered_white.png">
+      <Filter>res\png</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

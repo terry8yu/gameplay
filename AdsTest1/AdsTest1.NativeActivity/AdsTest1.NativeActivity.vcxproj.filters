@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="android_native_app_glue.h" />
+    <ClInclude Include="FormsSample.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="android_native_app_glue.c" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="FormsSample.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="res">
+      <UniqueIdentifier>{7b3a8ed1-22dd-4a66-800e-15aff95aca79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\forms">
+      <UniqueIdentifier>{30d50f82-a330-4d5b-8632-9e2340c612e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\shaders">
+      <UniqueIdentifier>{4bef55b8-7003-4a1d-8a7e-01310c69f5eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\ui">
+      <UniqueIdentifier>{c4b3fe6f-f0b8-42ff-a454-38d514ba4eb2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\forms\formBasicControls.form">
+      <Filter>res\forms</Filter>
+    </None>
+    <None Include="res\forms\formFlowLayout.form">
+      <Filter>res\forms</Filter>
+    </None>
+    <None Include="res\forms\formScrolling.form">
+      <Filter>res\forms</Filter>
+    </None>
+    <None Include="res\forms\formSelect.form">
+      <Filter>res\forms</Filter>
+    </None>
+    <None Include="res\forms\formVerticalLayout.form">
+      <Filter>res\forms</Filter>
+    </None>
+    <None Include="res\forms\formZOrder.form">
+      <Filter>res\forms</Filter>
+    </None>
+    <None Include="res\forms\gamepad.form">
+      <Filter>res\forms</Filter>
+    </None>
+    <None Include="res\ui\arial.gpb">
+      <Filter>res\ui</Filter>
+    </None>
+    <None Include="res\ui\default.theme">
+      <Filter>res\ui</Filter>
+    </None>
+    <None Include="res\ui\gamepad.theme">
+      <Filter>res\ui</Filter>
+    </None>
+    <None Include="res\shaders\colored.frag">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\colored.vert">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\font.frag">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\font.vert">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\lighting.frag">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\lighting.vert">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\skinning.vert">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\skinning-none.vert">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\sprite.frag">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\sprite.vert">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\terrain.frag">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\terrain.vert">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\textured.frag">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\textured.vert">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="res\camera.lua">
+      <Filter>res</Filter>
+    </None>
+    <None Include="..\game.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\ui\default-theme.png">
+      <Filter>res\ui</Filter>
+    </Image>
+    <Image Include="res\gamepad.png">
+      <Filter>res</Filter>
+    </Image>
+    <Image Include="res\logo.png">
+      <Filter>res</Filter>
+    </Image>
+    <Image Include="res\logo_powered_white.png">
+      <Filter>res</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
